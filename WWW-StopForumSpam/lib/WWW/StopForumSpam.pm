@@ -11,7 +11,7 @@ use Socket;
 use WWW::Curl::Easy;
 use JSON qw(decode_json);
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub new {
     my $class = shift;
@@ -236,6 +236,8 @@ sub _strip_tags {
 1;
 __END__
 
+=encoding utf8
+
 =head1 NAME
 
 WWW::StopForumSpam - Perl extension for the StopForumSpam.com API
@@ -285,11 +287,13 @@ An API key is only needed for reporting a new case of spam registration.
 
 =head1 SEE ALSO
 
-API keys and more detail on StopForumSpam are available at http://www.stopforumspam.com
+API keys and more detail on StopForumSpam are available at L<http://www.stopforumspam.com>.
 
-Github: https://github.com/lifeofguenter/p5-stopforumspam
-Website: http://www.perlhipster.com/p5-stopforumspam
-DNSBL: http://sfs.dnsbl.st
+Github: L<https://github.com/lifeofguenter/p5-stopforumspam>
+
+Website: L<http://www.perlhipster.com/p5-stopforumspam>
+
+DNSBL: L<http://sfs.dnsbl.st>
 
 =head1 AUTHOR
 
@@ -299,9 +303,7 @@ Günter Grodotzki, E<lt>guenter@perlhipster.comE<gt>
 
 Copyright (C) 2014 by Günter Grodotzki
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.16.2 or,
-at your option, any later version of Perl 5 you may have available.
-
+This module is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself. See L<perlartistic>.
 
 =cut

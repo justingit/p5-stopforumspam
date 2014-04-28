@@ -23,6 +23,13 @@ To install this module type the following:
    make install
 ```
 
+or via cpan
+
+```
+   $ cpan WWW::StopForumSpam
+```
+
+
 DEPENDENCIES
 ------------
 
@@ -40,6 +47,5 @@ COPYRIGHT AND LICENCE
 
 Copyright (C) 2014 by Günter Grodotzki <guenter@perlhipster.com>
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.16.2 or,
-at your option, any later version of Perl 5 you may have available.
+This module is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself. See http://dev.perl.org/licenses/
