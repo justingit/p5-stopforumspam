@@ -5,6 +5,8 @@ StopForumSpam is a Anti Spam Database for free usage. Even though aimed towards
 preventing registration of spambots on a forum, this extension can be used for
 any type of website (e.g. blog) as well.
 
+This fork uses LWP, instead of WWW::Curl to access the API. 
+
 An API key is only needed for reporting a new case of spam registration.
 
 * Website: http://www.perlhipster.com/p5-stopforumspam
@@ -39,8 +41,15 @@ This module requires these other modules and libraries:
 * URI::Escape;
 * Digest::MD5;
 * Socket;
-* WWW::Curl::Easy;
 * JSON;
+* CGI;
+* LWP;
+* HTTP::Request;
+* HTTP::Message;
+* Encode;
+* JSON;
+* Try::Tiny;
+
 
 COPYRIGHT AND LICENCE
 ---------------------
