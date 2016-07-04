@@ -1,7 +1,6 @@
 WWW-StopForumSpam (Perl extension)
 ==================================
 
-
 StopForumSpam is a Anti Spam Database for free usage. Even though aimed towards
 preventing registration of spambots on a forum, this extension can be used for
 any type of website (e.g. blog) as well.
