@@ -10,7 +10,7 @@ use Digest::MD5 qw(md5_hex);
 use Socket;
 
 use Try::Tiny; 
-use CGI; 
+use CGI qw(:oldstyle_urls);
 use LWP;
 use LWP::UserAgent;
 use HTTP::Request;
@@ -268,41 +268,6 @@ sub _query_api {
     	    }
     	}
     }
-	
-	
-=cut
-	    
-    my $buffer = "";
-    my $curl = WWW::Curl::Easy->new();
-    
-    if ($is_submit) {
-        $curl->setopt(CURLOPT_URL, "http://www.stopforumspam.com/add.php");
-        $curl->setopt(CURLOPT_POST, 1);
-        $curl->setopt(CURLOPT_POSTFIELDS, $data);
-    } else {
-        $curl->setopt(CURLOPT_URL, $self->{api_url} . "?" . $data);
-    }
-    
-    $curl->setopt(CURLOPT_USERAGENT, "");
-    $curl->setopt(CURLOPT_ENCODING, "");
-    $curl->setopt(CURLOPT_NOPROGRESS, 1);
-    $curl->setopt(CURLOPT_FAILONERROR, 0);
-    $curl->setopt(CURLOPT_TIMEOUT, $self->{timeout});
-    $curl->setopt(CURLOPT_WRITEFUNCTION, sub {
-        $buffer .= $_[0];
-        return length($_[0]);
-    });
-    
-    my $retcode = $curl->perform();
-    
-    if($retcode != 0) {
-        warn $curl->errbuf;
-        return;
-    }
-    
-    return ($curl->getinfo(CURLINFO_HTTP_CODE), $buffer);
-=cut
-
 }
 
 
@@ -350,9 +315,6 @@ sub the_query_string {
     my $qs = $new_q->query_string();
     return $qs;
 }
-
-
-
 
 sub _get_avg_confidence {
     my ($self, $decoded_json) = @_;
