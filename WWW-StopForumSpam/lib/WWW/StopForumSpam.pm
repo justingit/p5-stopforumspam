@@ -80,10 +80,12 @@ sub check {
         return 1;
     }
     
+	# warn '$r' . $r; 
+	
     my $decoded_json = decode_json($r);
 	
-	use Data::Dumper; 
-	print Dumper($decoded_json);
+	#use Data::Dumper; 
+	#warn Dumper($decoded_json);
 	
 	
 	
@@ -198,6 +200,8 @@ sub _query_api {
     my $ua = LWP::UserAgent->new;
        $ua->agent( 'Mozilla/5.0 (compatible; WWW::StopForumSpam/0.1; +http://www.perlhipster.com/bot.html)');
 
+	   # warn 'URL:' . $url; 
+	   
     if ( $self->can_use_compress_zlib() == 1 ) {
         my $can_accept = HTTP::Message::decodable();
 		my $res = undef; 
@@ -309,6 +313,7 @@ sub the_query_string {
     my $self         = shift;
     my $query_params = shift;
     my $new_q        = CGI->new;
+	$new_q->delete_all(); 
     for ( sort { lc $a cmp lc $b } ( keys %$query_params ) ) {
         $new_q->param( $_, $query_params->{$_} );
     }
