@@ -3,7 +3,7 @@ package WWW::StopForumSpam;
 use 5.010;
 use strict;
 use warnings;
-use autodie;
+#use autodie;
 use Carp qw(carp croak);
 use URI::Escape;
 use Digest::MD5 qw(md5_hex);
@@ -40,21 +40,28 @@ sub new {
             $self->{api_url} = "$value";
         } elsif($attr eq "dnsbl") {
             $self->{dnsbl} = "$value";
-        } elsif($attr eq "treshold") {
-            $self->{treshold} = 0 + $value;
+        } elsif($attr eq "threshold") {
+            $self->{threshold} = 0 + $value;
         }
     }
     
     # validate / set defaults
-    $self->{api_url} = "http://www.stopforumspam.com/api" unless exists $self->{api_url};
-    $self->{dnsbl} = "sfs.dnsbl.st." unless exists $self->{dnsbl};
-    $self->{timeout} = 4 unless exists $self->{timeout};
+    $self->{api_url} = "http://www.stopforumspam.com/api" 
+		unless exists $self->{api_url};
+    $self->{dnsbl} = "sfs.dnsbl.st." 
+		unless exists $self->{dnsbl};
+    $self->{timeout} = 4 
+		unless exists $self->{timeout};
     $self->{connect_timeout} = $self->_ceil($self->{timeout} / 2);
-    $self->{treshold} = 65 unless exists $self->{treshold};
+    $self->{threshold} = 65 
+		unless exists $self->{threshold};
+		
     return $self;
 }
 
 sub check {
+	
+	# Returns 1 if spammer
 	
     my $self = shift;
     my @request_params = ();
@@ -74,30 +81,25 @@ sub check {
     
     my ($r, $res) = $self->_query_api($query);
     
-    # if the api is not working, we don't want to allow potential spammers
-    # signing up, so rather force the developers to check their logs...
-    if (not defined $r) {
-        return 1;
+    if (! defined $r) {
+		warn 'Returning negative on suspected spammer as StopForumSpam service seems to be unreachable. (Status:' . $res->status_line . ')';
+        return 0;
     }
-    
-	# warn '$r' . $r; 
-	
+		
     my $decoded_json = decode_json($r);
 	
 	#use Data::Dumper; 
 	#warn Dumper($decoded_json);
 	
-	
-	
     if(not defined $decoded_json->{'success'}) {
-        warn "unable to read json";
-        return 1;
+        warn "Returning negative on suspected spammer as StopForumSpam service returned results we're not able to read.";
+        return 0;
     } elsif($decoded_json->{'success'} == 0) {
-        warn $decoded_json->{'error'};
-        return 1;
+        warn "Returning negative on suspected spammer for StopForumSpam service because:" . $decoded_json->{'error'};
+        return 0;
     }
     
-    if($self->_get_avg_confidence($decoded_json) > $self->{treshold}) {
+    if($self->_get_avg_confidence($decoded_json) > $self->{threshold}) {
         return 1;
     }
     
@@ -229,7 +231,7 @@ sub _query_api {
             }
     	}
     	else { 
-    	    carp "Problem fetching url, '$url':" . $res->status_line;
+    	    carp "Cannot Access StopForumSpam API at: '$url':" . $res->status_line;
     		if(wantarray){ 
                 return (undef, $res); 
             }
@@ -383,7 +385,7 @@ An API key is only needed for reporting a new case of spam registration.
     my $sfs = WWW::StopForumSpam->new(
         api_key => "",                  # optional
         timeout => 4,                   # cURL timeout in seconds, defaults to 4
-        treshold => 65,                 # defaults to 65
+        threshold => 65,                 # defaults to 65
     );
     
     # Returns 1 if spammer (caution: it will return 1 also on errors, this is to
